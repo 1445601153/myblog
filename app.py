@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(10)  # CSRF
 Bootstrap(app)
-moment = Moment(app) # 本地时间
+moment = Moment(app)  # 本地时间
 
 
 @app.route('/', methods=['GET', 'POST'])  # 首页
