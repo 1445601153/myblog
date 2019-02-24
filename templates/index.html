@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{%  block title %} Index Page{%  endblock %}
+
+{% block page_content %}
+<div class="container">
+        <div class="page-header">
+            <p>The local time is {{ moment(current_time).format('LLLL') }}</p>
+            <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+            <h1>年轻和幼稚都会造成同样的弱点：缺乏耐性。无论做什么事，都想马上看到结果。人生就是一连串的等待，
+                这样的教训往往得到中年才能体会。而意识到这一教训实为真知灼见，往往要耗费剩下的全部人生。
+            </h1>
+            <h1>Hello, {% if name %}{{ name }} {% else %}Stranger{% endif %}</h1>
+        </div>
+{{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
