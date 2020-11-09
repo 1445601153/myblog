@@ -8,6 +8,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(10)  # CSRF
 Bootstrap(app)
