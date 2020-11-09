@@ -1,28 +1,38 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask import send_from_directory
 from flask_moment import Moment
 from datetime import datetime
 from views import NameForm, LoginForm
 import os
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(10)  # CSRF
 Bootstrap(app)
 moment = Moment(app)  # 本地时间
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+    'MYSQL://root:Zhangjiayu0.0@QAQ/database'
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+db = SQLAlchemy(app)
 
 
 @app.route('/', methods=['GET', 'POST'])  # 首页
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    name = None
     form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data
-        form.name.data= ''
+        oldName = session.get('name')
+        if oldName is not None and oldName != form.name.data:
+            flash('Looks like you have change a name!')
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
     return render_template('index.html', current_time=datetime.utcnow(),
-                           form=form, name=name)
+                           form=form, name=session.get('name'))
 
 
 @app.route('/user/<name>')  # 个人页面
